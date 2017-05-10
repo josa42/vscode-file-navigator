@@ -76,7 +76,16 @@ export function activate(context: vscode.ExtensionContext) {
 
   let disposable = vscode.commands.registerCommand('extension.showFileNavigator', () => {
     const { rootPath } = vscode.workspace;
-    showDirContent(rootPath, '')
+
+    let dirPath = '';
+    if (vscode.window.activeTextEditor) {
+      const { fileName } = vscode.window.activeTextEditor.document
+      if (fileName.indexOf(rootPath) === 0) {
+        dirPath = path.dirname(fileName.replace(`${rootPath}/`, ''))
+      }
+    }
+
+    showDirContent(rootPath, dirPath)
   });
 
     context.subscriptions.push(disposable);
