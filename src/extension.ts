@@ -24,15 +24,15 @@ function dirContent(rootPath: string, dirPath: string) : Promise<string[]> {
           return name
         })
         .sort((a, b) => {
-          const aIsDir = a.match(/\/$/)
-          const bIsDir = b.match(/\/$/)
+          const aIsDir = /\/$/.test(a)
+          const bIsDir = /\/$/.test(b)
+
           if (aIsDir !== bIsDir) {
-            return bIsDir ? 1 : 0;
+            return bIsDir ? 1 : -1;
           }
 
           return a.localeCompare(b);
-        })
-      )
+        }))
     })
   })
 }
