@@ -38,23 +38,29 @@ function dirContent(rootPath: string, dirPath: string) : Promise<string[]> {
 }
 
 function showDirContent(rootPath: string, dirPath: string) {
+
+  if (dirPath === '.') {
+    dirPath = ''
+  }
+
   dirContent(rootPath, dirPath)
-    .then((paths) => vscode.window.showQuickPick((paths), { placeHolder: dirPath }))
+    .then((paths) => {
+
+      const options = !dirPath ? paths : ['..', ...paths];
+
+      return vscode.window.showQuickPick((options), { placeHolder: dirPath });
+    })
     .then((selection: string | undefined) => {
       if (!selection) { return; }
 
-      if (selection.match(/\/$/)) {
+      if (selection === '..') {
+        showDirContent(rootPath, path.join(dirPath, selection))
+      } else if (selection.match(/\/$/)) {
         showDirContent(rootPath, selection)
       } else {
         openFile(path.join(rootPath, selection))
       }
     })
-}
-
-function showQuickPick(choices: Promise<string[]>) {
-  return vscode.window.showQuickPick((choices), {
-    placeHolder: 'Select File'
-  });
 }
 
 function openFile(filePath: string) {
