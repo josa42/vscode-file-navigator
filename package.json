@@ -2,7 +2,7 @@
     "name": "file-navigator",
     "displayName": "File Navigator",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "josa",
     "license": "MIT",
     "homepage": "https://github.com/josa42/vscode-file-navigator",
